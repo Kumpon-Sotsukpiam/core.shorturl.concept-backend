@@ -1,0 +1,39 @@
+import { HttpHealthIndicator } from '@nestjs/terminus';
+import { Test, TestingModule } from '@nestjs/testing';
+import { AnyOtherModuleService } from '../any-other-module.service';
+import { HealthService } from '../health.service';
+import { PrometheusService } from '../prometheus.service';
+
+describe('HealthService', () => {
+  let service: HealthService;
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        HealthService,
+        // {
+        //   provide: HttpHealthIndicator,
+        //   useValue: {}
+        // },
+        {
+          provide: PrometheusService,
+          useValue: {
+            constructor: jest.fn()
+          }
+        },
+        {
+          provide: AnyOtherModuleService,
+          useValue: {
+            isConnected: true
+          }
+        }
+      ],
+    }).compile();
+
+    service = module.get<HealthService>(HealthService);
+  });
+
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+});

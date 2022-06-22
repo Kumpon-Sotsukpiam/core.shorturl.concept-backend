@@ -1,0 +1,10 @@
+version: "3"
+services:
+  core-shorturl-concept:
+    container_name: core.shorturl.concept
+    build:
+      context: .
+      dockerfile: "./docker/Dockerfile.alpine"
+    image: core.shorturl.concept
+    ports:
+      - "3000:3000"
