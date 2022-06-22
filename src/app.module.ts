@@ -11,8 +11,12 @@ import LogsMiddleware from './common/middleware/logs.middleware';
 import { HealthModule } from './api-metrics/health/health.module';
 import { MetricsModule } from './api-metrics/metrics/metrics.module';
 import { PrismaModule } from './modules/prisma';
+import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/user.module';
+import { DomainModule } from './modules/domain/domain.module';
+import { LinkModule } from './modules/link/link.module';
 
-const BusinessModule = [];
+const BusinessModule = [UserModule, AuthModule, DomainModule, LinkModule];
 const MonitoringModule = [HealthModule, MetricsModule];
 const GuardModule = [];
 @Module({
