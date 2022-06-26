@@ -17,4 +17,5 @@ export const validationSchema = Joi.object({
   REDIS_PORT: Joi.number().required(),
   REDIS_DB: Joi.number().required(),
   SWAGGER_DARK: Joi.boolean().default(false),
+  DISALLOW_REGISTRATION: Joi.boolean().default(false),
 });

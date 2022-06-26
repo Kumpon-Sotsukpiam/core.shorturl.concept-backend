@@ -15,8 +15,15 @@ import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/user.module';
 import { DomainModule } from './modules/domain/domain.module';
 import { LinkModule } from './modules/link/link.module';
+import { UrlModule } from './modules/url/url.module';
 
-const BusinessModule = [UserModule, AuthModule, DomainModule, LinkModule];
+const BusinessModule = [
+  UserModule,
+  AuthModule,
+  DomainModule,
+  LinkModule,
+  UrlModule,
+];
 const MonitoringModule = [HealthModule, MetricsModule];
 const GuardModule = [];
 @Module({

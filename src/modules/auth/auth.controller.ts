@@ -1,8 +1,18 @@
-import { Controller, Get, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 //------------ Import services ------------//
 import { AuthService } from './commands/auth.service';
-//------------ Import DTOs ------------//
+//------------ Import guards ------------//
+import { SignupAccessGuard } from './guards/signupAccess.guard';
+//------------ Import guards ------------//
+import { SignUpRequestDTO } from './dtos/signup-request.dto';
 
 @Controller({ path: 'auth' })
 @ApiTags('Authentication')
@@ -16,10 +26,14 @@ export class AuthController {
   async login() {}
 
   @Post('/signup')
+  @UseGuards(SignupAccessGuard)
   @ApiResponse({
     status: HttpStatus.OK,
   })
-  async signup() {}
+  async signup(@Body() input: SignUpRequestDTO) {
+    const user = await this.authService.signup(input);
+    return null;
+  }
 
   @Post('/renew')
   @ApiResponse({

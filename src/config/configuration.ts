@@ -10,4 +10,5 @@ export const configuration = () => ({
   REDIS_PORT: process.env.REDIS_PORT,
   REDIS_DB: process.env.REDIS_DB,
   SWAGGER_DARK: process.env.SWAGGER_DARK === 'true',
+  DISALLOW_REGISTRATION: process.env.DISALLOW_REGISTRATION === 'true',
 });
