@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
+import * as crypto from 'crypto';
 
 //------------ Import services ------------//
 import { PrismaService } from '../../prisma';
@@ -15,7 +16,6 @@ export class AuthService {
   private readonly logger = new Logger(AuthService.name);
 
   constructor(
-    private readonly prismaService: PrismaService,
     private readonly userService: UserService,
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
@@ -44,6 +44,16 @@ export class AuthService {
       return user;
     }
     return null;
+  }
+  public async verifyByApiKey({ apikey }: { apikey: string }) {
+    const user = await this.userService.getByApiKey(apikey);
+    if (user) return user;
+    return null;
+  }
+  public async generateApiKey(user_id: string) {
+    const apikey = crypto.randomUUID();
+    const updateUser = await this.userService.updateApikey(apikey, user_id);
+    return { apikey };
   }
   private async validatePassword(
     plainTextPassword: string,

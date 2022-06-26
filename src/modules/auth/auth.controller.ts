@@ -7,14 +7,19 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiResponse,
+  ApiSecurity,
+  ApiTags,
+} from '@nestjs/swagger';
 //------------ Import services ------------//
 import { AuthService } from './commands/auth.service';
 //------------ Import guards ------------//
 import { SignupAccessGuard } from './guards/signupAccess.guard';
 import { LocalGuard } from './guards/local.guard';
 import { AccessTokenGuard } from './guards/jwt-access-token.guard';
+import { ApiKeyGuard } from './guards/api-key.guard';
 //------------ Import DTOs ------------//
 import { SignUpRequestDTO } from './dtos/signup-request.dto';
 import { LoginRequestDTO } from './dtos/login-request.dto';
@@ -22,6 +27,7 @@ import { LoginRequestDTO } from './dtos/login-request.dto';
 @Controller({ path: 'auth' })
 @ApiTags('Authentication')
 @ApiBearerAuth('Authorization')
+@ApiSecurity('x-api-key')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -37,7 +43,7 @@ export class AuthController {
   @Post('/signup')
   @UseGuards(SignupAccessGuard)
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.CREATED,
   })
   async signup(@Body() input: SignUpRequestDTO) {
     const user = await this.authService.signup(input);
@@ -67,8 +73,15 @@ export class AuthController {
   @ApiResponse({
     status: HttpStatus.OK,
   })
-  async apikey() {}
+  async apikey(@Req() req) {
+    return this.authService.generateApiKey(req.user.id);
+  }
 
+  @Get('/test')
+  @UseGuards(ApiKeyGuard)
+  async getHeader(@Req() req) {
+    return req.user;
+  }
   // @Post('/reset-password/:resetPasswordToken')
   // @ApiResponse({
   //   status: HttpStatus.OK,

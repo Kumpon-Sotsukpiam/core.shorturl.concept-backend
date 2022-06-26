@@ -31,6 +31,16 @@ export class UserService {
     });
     return newUser;
   }
+  public async updateApikey(apikey: string, user_id: string) {
+    return this.prismaService.users.update({
+      where: {
+        id: Number(user_id),
+      },
+      data: {
+        apikey,
+      },
+    });
+  }
   public async getByEmail(email: string) {
     return this.prismaService.users.findUnique({
       where: { email },
@@ -39,6 +49,11 @@ export class UserService {
   public async getById(id: number) {
     return this.prismaService.users.findUnique({
       where: { id },
+    });
+  }
+  public async getByApiKey(apikey: string) {
+    return this.prismaService.users.findFirst({
+      where: { apikey },
     });
   }
 }

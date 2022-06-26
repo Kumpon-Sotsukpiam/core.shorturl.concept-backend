@@ -12,10 +12,11 @@ import { AuthService } from './commands/auth.service';
 //------------ Import strategies ------------//
 import { LocalStrategy } from './strategy/local.strategy';
 import { JwtAccessTokenStrategy } from './strategy/jwt-access-token.strategy';
+import { ApiKeyStrategy } from './strategy/api-key.strategy';
 
 const httpControllers = [AuthController];
 const commandHandlers = [AuthService];
-const strategy = [LocalStrategy, JwtAccessTokenStrategy];
+const strategy = [LocalStrategy, JwtAccessTokenStrategy, ApiKeyStrategy];
 
 @Module({
   imports: [
