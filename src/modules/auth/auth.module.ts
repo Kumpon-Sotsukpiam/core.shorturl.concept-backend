@@ -21,7 +21,7 @@ const strategy = [LocalStrategy, JwtAccessTokenStrategy, ApiKeyStrategy];
 @Module({
   imports: [
     PrismaModule,
-    UserModule,
+    forwardRef(() => UserModule),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

@@ -2,6 +2,7 @@ import { forwardRef, Module } from '@nestjs/common';
 
 //------------ Import modules ------------//
 import { PrismaModule } from '../../modules/prisma';
+import { AuthModule } from '../auth/auth.module';
 //------------ Import controllers ------------//
 import { UserController } from './user.controller';
 //------------ Import services ------------//
@@ -11,7 +12,7 @@ const httpControllers = [UserController];
 const commandHandlers = [UserService];
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, forwardRef(() => AuthModule)],
   controllers: [...httpControllers],
   providers: [...commandHandlers],
   exports: [UserService],

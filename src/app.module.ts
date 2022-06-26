@@ -1,7 +1,10 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import { HttpModule } from '@nestjs/axios';
 
+//------------ Import guards ------------//
+import { AccessTokenGuard } from './modules/auth/guards/jwt-access-token.guard';
 //------------ Import configs ------------//
 import { configuration } from './config/configuration';
 import { validationSchema } from './config/validation';
@@ -18,14 +21,19 @@ import { LinkModule } from './modules/link/link.module';
 import { UrlModule } from './modules/url/url.module';
 
 const BusinessModule = [
-  UserModule,
   AuthModule,
+  UserModule,
   DomainModule,
   LinkModule,
   UrlModule,
 ];
 const MonitoringModule = [HealthModule, MetricsModule];
-const GuardModule = [];
+const GuardModule = [
+  {
+    provide: APP_GUARD,
+    useClass: AccessTokenGuard,
+  },
+];
 @Module({
   imports: [
     ConfigModule.forRoot({

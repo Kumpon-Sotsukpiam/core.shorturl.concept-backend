@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Observable } from 'rxjs';
 
 //------------ Import exceptions ------------//
-import { RegitrationNotAllowedException } from '../exceptions/auth.exceptions';
+import { RegitrationNotAllowedException } from '../../exceptions/auth.exceptions';
 
 @Injectable()
 export class SignupAccessGuard implements CanActivate {

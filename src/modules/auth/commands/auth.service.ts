@@ -55,7 +55,7 @@ export class AuthService {
     const updateUser = await this.userService.updateApikey(apikey, user_id);
     return { apikey };
   }
-  private async validatePassword(
+  public async validatePassword(
     plainTextPassword: string,
     hashedPassword: string,
   ): Promise<boolean> {

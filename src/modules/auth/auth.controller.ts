@@ -16,13 +16,14 @@ import {
 //------------ Import services ------------//
 import { AuthService } from './commands/auth.service';
 //------------ Import guards ------------//
-import { SignupAccessGuard } from './guards/signupAccess.guard';
+import { SignupAccessGuard } from './guards/canActivate/signupAccess.guard';
 import { LocalGuard } from './guards/local.guard';
 import { AccessTokenGuard } from './guards/jwt-access-token.guard';
-import { ApiKeyGuard } from './guards/api-key.guard';
 //------------ Import DTOs ------------//
 import { SignUpRequestDTO } from './dtos/signup-request.dto';
 import { LoginRequestDTO } from './dtos/login-request.dto';
+//------------ Import decorators ------------//
+import { Public } from '../../common/decorators';
 
 @Controller({ path: 'auth' })
 @ApiTags('Authentication')
@@ -31,6 +32,7 @@ import { LoginRequestDTO } from './dtos/login-request.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Public()
   @Post('/login')
   @UseGuards(LocalGuard)
   @ApiResponse({
@@ -40,6 +42,7 @@ export class AuthController {
     return this.authService.signToken(req.user);
   }
 
+  @Public()
   @Post('/signup')
   @UseGuards(SignupAccessGuard)
   @ApiResponse({
@@ -77,11 +80,6 @@ export class AuthController {
     return this.authService.generateApiKey(req.user.id);
   }
 
-  @Get('/test')
-  @UseGuards(ApiKeyGuard)
-  async getHeader(@Req() req) {
-    return req.user;
-  }
   // @Post('/reset-password/:resetPasswordToken')
   // @ApiResponse({
   //   status: HttpStatus.OK,

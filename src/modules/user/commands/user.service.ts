@@ -56,4 +56,9 @@ export class UserService {
       where: { apikey },
     });
   }
+  public async deleteById(id: number) {
+    return this.prismaService.users.delete({
+      where: { id },
+    });
+  }
 }
