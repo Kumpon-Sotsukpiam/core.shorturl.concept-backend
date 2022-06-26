@@ -1,6 +1,4 @@
 import { Injectable, Logger } from '@nestjs/common';
-import * as argon2 from 'argon2';
-
 //------------ Import services ------------//
 import { PrismaService } from '../../prisma';
 //------------ Import exceptions ------------//
@@ -25,22 +23,22 @@ export class UserService {
     if (user) {
       throw new UserAlreadyExistsException();
     }
-    const hashedPassword = await this.hashPassword(password);
     const newUser = await this.prismaService.users.create({
       data: {
         email: email,
-        password: hashedPassword,
+        password: password,
       },
     });
     return newUser;
   }
-  private async validatePassword(
-    plainTextPassword: string,
-    hashedPassword: string,
-  ): Promise<boolean> {
-    return argon2.verify(hashedPassword, plainTextPassword);
+  public async getByEmail(email: string) {
+    return this.prismaService.users.findUnique({
+      where: { email },
+    });
   }
-  private hashPassword(password: string): Promise<string> {
-    return argon2.hash(password);
+  public async getById(id: number) {
+    return this.prismaService.users.findUnique({
+      where: { id },
+    });
   }
 }
