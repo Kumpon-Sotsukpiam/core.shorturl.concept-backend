@@ -11,7 +11,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UrlService } from './commands/url.service';
 //------------ Import DTOs ------------//
 
-@Controller({ path: 'url' })
+@Controller({ path: 'api/url' })
 @ApiTags('URL')
 export class UrlController {
   constructor(private readonly urlService: UrlService) {}

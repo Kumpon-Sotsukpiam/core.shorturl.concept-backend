@@ -4,7 +4,7 @@ import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { DomainService } from './commands/domain.service';
 //------------ Import DTOs ------------//
 
-@Controller({ path: 'domain' })
+@Controller({ path: 'api/domain' })
 @ApiTags('Domain')
 export class DomainController {
   constructor(private readonly domainService: DomainService) {}

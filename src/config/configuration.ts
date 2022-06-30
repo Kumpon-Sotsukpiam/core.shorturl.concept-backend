@@ -11,4 +11,6 @@ export const configuration = () => ({
   REDIS_DB: process.env.REDIS_DB,
   SWAGGER_DARK: process.env.SWAGGER_DARK === 'true',
   DISALLOW_REGISTRATION: process.env.DISALLOW_REGISTRATION === 'true',
+  LINK_LENGTH: parseInt(process.env.LINK_LENGTH) || 10,
+  DEFAULT_DOMAIN: process.env.DEFAULT_DOMAIN,
 });

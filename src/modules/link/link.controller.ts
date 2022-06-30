@@ -1,18 +1,26 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
   HttpStatus,
   Patch,
   Post,
+  Query,
+  Req,
 } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 //------------ Import services ------------//
 import { LinkService } from './commands/link.service';
 //------------ Import DTOs ------------//
+import { CreateLinkRequestDTO } from './dtos/create-link-request.dto';
+//------------ Import utils ------------//
+import { PaginationParamsDTO } from '../../common/utils/types/pagination-params.dto';
 
-@Controller({ path: 'link' })
+@Controller({ path: 'api/link' })
 @ApiTags('Link')
+@ApiTags('Authentication')
+@ApiBearerAuth('Authorization')
 export class LinkController {
   constructor(private readonly linkService: LinkService) {}
 
@@ -20,13 +28,17 @@ export class LinkController {
   @ApiResponse({
     status: HttpStatus.OK,
   })
-  async getLink() {}
+  async getLink(@Query() { offset, limit }: PaginationParamsDTO) {
+    return this.linkService.get(Number(offset), Number(limit));
+  }
 
   @Post('/')
   @ApiResponse({
     status: HttpStatus.CREATED,
   })
-  async createLink() {}
+  async createLink(@Body() input: CreateLinkRequestDTO, @Req() req) {
+    return this.linkService.create(input, { user_id: req.user.id });
+  }
 
   @Patch('/:id')
   @ApiResponse({

@@ -25,7 +25,7 @@ import { LoginRequestDTO } from './dtos/login-request.dto';
 //------------ Import decorators ------------//
 import { Public } from '../../common/decorators';
 
-@Controller({ path: 'auth' })
+@Controller({ path: 'api/auth' })
 @ApiTags('Authentication')
 @ApiBearerAuth('Authorization')
 @ApiSecurity('x-api-key')

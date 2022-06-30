@@ -19,9 +19,11 @@ import { AuthModule } from './modules/auth/auth.module';
 import { DomainModule } from './modules/domain/domain.module';
 import { LinkModule } from './modules/link/link.module';
 import { UrlModule } from './modules/url/url.module';
+import { RedirectModule } from './modules/redirect/redirect.module';
 
 const BusinessModule = [
   AuthModule,
+  RedirectModule,
   UserModule,
   DomainModule,
   LinkModule,

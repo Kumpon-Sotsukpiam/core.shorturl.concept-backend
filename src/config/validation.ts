@@ -18,4 +18,6 @@ export const validationSchema = Joi.object({
   REDIS_DB: Joi.number().required(),
   SWAGGER_DARK: Joi.boolean().default(false),
   DISALLOW_REGISTRATION: Joi.boolean().default(false),
+  LINK_LENGTH: Joi.number().required(),
+  DEFAULT_DOMAIN: Joi.string().required(),
 });

@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { Logger } from '@nestjs/common';
+import { Logger, RequestMethod } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 //------------ Import commons ------------//
@@ -8,8 +8,8 @@ import { ValidationPipe } from './common/pipes/validation.pipe';
 import { GqlExceptionFilter } from './common/filters/graphql-exceptoin.filter';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 //------------ Import utils ------------//
-import getLogLevels from './utils/getLogLevels';
-import { css } from './utils/swagger-ui/SwaggerDarl.css';
+import getLogLevels from './common/utils/getLogLevels';
+import { css } from './common/utils/swagger-ui/SwaggerDarl.css';
 //------------ Import modules ------------//
 import { AppModule } from './app.module';
 import { AuditLogInterceptor } from './common/interceptors/auditlog.interceptor';
@@ -26,7 +26,6 @@ async function bootstrap() {
     const NODE_ENV = configService.get<string>('NODE_ENV');
     // setup application
     // Validation
-    app.setGlobalPrefix('api');
     app.useGlobalPipes(new ValidationPipe());
     app.useLogger(getLogLevels(NODE_ENV === 'production'));
     app.useGlobalFilters(new GqlExceptionFilter());
