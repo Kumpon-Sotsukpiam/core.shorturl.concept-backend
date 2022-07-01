@@ -2,8 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { Logger, RequestMethod } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-
+import { ExpressAdapter } from '@bull-board/express';
+import { createBullBoard } from '@bull-board/api';
+import { BullAdapter } from '@bull-board/api/bullAdapter';
+import * as Queue from 'bull';
 //------------ Import commons ------------//
+import { VISIT_QUEUE } from './common/constant/queue.constant';
 import { ValidationPipe } from './common/pipes/validation.pipe';
 import { GqlExceptionFilter } from './common/filters/graphql-exceptoin.filter';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
@@ -15,6 +19,17 @@ import { AppModule } from './app.module';
 import { AuditLogInterceptor } from './common/interceptors/auditlog.interceptor';
 import { ExceptionInterceptor } from './common/interceptors/exception.interceptor';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
+
+function initBullBoard(app: any, redisOptions: Queue.QueueOptions) {
+  const serverAdapter = new ExpressAdapter();
+  serverAdapter.setBasePath('/api/admin/queues');
+  const mailQueue = new Queue(VISIT_QUEUE, { ...redisOptions });
+  createBullBoard({
+    queues: [new BullAdapter(mailQueue)],
+    serverAdapter,
+  });
+  app.use('/api/admin/queues', serverAdapter.getRouter());
+}
 
 async function bootstrap() {
   try {
@@ -57,6 +72,12 @@ async function bootstrap() {
       swaggerOptions['customCss'] = css.toString();
     }
     SwaggerModule.setup('api/docs', app, document, swaggerOptions);
+    initBullBoard(app, {
+      redis: {
+        port: configService.get('REDIS_PORT'),
+        host: configService.get('REDIS_HOST'),
+      },
+    });
     await app.listen(PORT);
   } catch (error) {
     Logger.error(`❌  Error starting server, ${error}`, '', 'Bootstrap', false);
