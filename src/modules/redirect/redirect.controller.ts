@@ -2,9 +2,9 @@ import {
   Controller,
   Get,
   HttpStatus,
+  Logger,
   Next,
   Param,
-  Post,
   Req,
   Res,
 } from '@nestjs/common';
@@ -15,6 +15,7 @@ import * as isbot from 'isbot';
 //------------ Import services ------------//
 import { RedirectService } from './commands/redirect.service';
 import { LinkService } from '../link/commands/link.service';
+import { VisitService } from '../visit/commands/visit.service';
 //------------ Import Decorators ------------//
 import { Public } from '../../common/decorators';
 //------------ Import DTOs ------------//
@@ -25,10 +26,13 @@ import { ConfigService } from '@nestjs/config';
 @Controller({ path: '/' })
 @ApiTags('Redirect')
 export class RedirectController {
+  private readonly logger = new Logger(RedirectController.name);
+
   constructor(
     private readonly redirectService: RedirectService,
     private readonly configSerice: ConfigService,
     private readonly linkService: LinkService,
+    private readonly visitService: VisitService,
   ) {}
 
   @Public()
@@ -42,8 +46,8 @@ export class RedirectController {
     @Next() next: NextFunction,
     @Param() { id }: IdDTO,
   ) {
+    this.logger.debug(req.ip);
     const isBot = isbot(req.headers['user-agent']);
-
     // 1. if custom domain, get domain info
     const host = removeWww(req.headers.host);
     const domain = null;
@@ -57,7 +61,23 @@ export class RedirectController {
     if (!link) {
       return res.redirect(301, '/404');
     }
-    // 8
+
+    // 4. if link is protected, redirect to password page
+    if (link.password) {
+      return res.redirect(`/protected/${link.uuid}`);
+    }
+
+    // 5. create link visit
+    if (true) {
+      this.visitService.add({
+        headers: req.headers,
+        realIp: req.ip,
+        referrer: req.get('Referrer'),
+        link,
+      });
+    }
+
+    // 6. redirect to targer.
     return res.redirect(link.target);
   }
 }

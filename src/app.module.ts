@@ -19,6 +19,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { DomainModule } from './modules/domain/domain.module';
 import { LinkModule } from './modules/link/link.module';
 import { UrlModule } from './modules/url/url.module';
+import { VisitModule } from './modules/visit/visit.module';
+import { IPModule } from './modules/ip/ip.module';
 import { RedirectModule } from './modules/redirect/redirect.module';
 
 const BusinessModule = [
@@ -28,6 +30,8 @@ const BusinessModule = [
   DomainModule,
   LinkModule,
   UrlModule,
+  VisitModule,
+  IPModule,
 ];
 const MonitoringModule = [HealthModule, MetricsModule];
 const GuardModule = [

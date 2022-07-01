@@ -66,6 +66,7 @@
         "dayjs": "^1.11.0",
         "dotenv-cli": "^4.1.1",
         "fastify-swagger": "^4.15.0",
+        "geoip-lite": "^1.4.5",
         "graphql": "^15.8.0",
         "graphql-tools": "^8.2.0",
         "isbot": "^3.5.0",
@@ -87,6 +88,7 @@
         "rxjs": "^7.2.0",
         "swagger-ui-express": "^4.3.0",
         "typeorm": "^0.2.41",
+        "useragent": "^2.3.0",
         "zxcvbn": "^4.4.2"
     },
     "devDependencies": {

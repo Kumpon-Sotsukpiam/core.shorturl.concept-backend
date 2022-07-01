@@ -5,7 +5,6 @@ import * as argon2 from 'argon2';
 import * as crypto from 'crypto';
 
 //------------ Import services ------------//
-import { PrismaService } from '../../prisma';
 import { UserService } from '../../user/commands/user.service';
 //------------ Import DTOs ------------//
 import { SignUpRequestDTO } from '../dtos/signup-request.dto';
