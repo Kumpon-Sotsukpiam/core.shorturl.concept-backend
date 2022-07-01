@@ -2,6 +2,8 @@ import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { HttpModule } from '@nestjs/axios';
+import { BullModule } from '@nestjs/bull';
+import { ConfigService } from '@nestjs/config';
 
 //------------ Import guards ------------//
 import { AccessTokenGuard } from './modules/auth/guards/jwt-access-token.guard';
@@ -47,6 +49,17 @@ const GuardModule = [
       isGlobal: true,
       load: [configuration],
       validationSchema,
+    }),
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        redis: {
+          host: configService.get('REDIS_HOST'),
+          port: configService.get('REDIS_PORT'),
+          db: configService.get('REDIS_DB'),
+        },
+      }),
     }),
     HttpModule,
     PrismaModule,

@@ -15,7 +15,7 @@ import * as isbot from 'isbot';
 //------------ Import services ------------//
 import { RedirectService } from './commands/redirect.service';
 import { LinkService } from '../link/commands/link.service';
-import { VisitService } from '../visit/commands/visit.service';
+import { VisitQueueService } from '../visit/commands/visit.queue.service';
 //------------ Import Decorators ------------//
 import { Public } from '../../common/decorators';
 //------------ Import DTOs ------------//
@@ -32,7 +32,7 @@ export class RedirectController {
     private readonly redirectService: RedirectService,
     private readonly configSerice: ConfigService,
     private readonly linkService: LinkService,
-    private readonly visitService: VisitService,
+    private readonly visitQueueService: VisitQueueService,
   ) {}
 
   @Public()
@@ -69,12 +69,7 @@ export class RedirectController {
 
     // 5. create link visit
     if (true) {
-      this.visitService.add({
-        headers: req.headers,
-        realIp: req.ip,
-        referrer: req.get('Referrer'),
-        link,
-      });
+      this.visitQueueService.add({ req, link });
     }
 
     // 6. redirect to targer.
