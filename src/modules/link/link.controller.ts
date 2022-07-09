@@ -16,7 +16,8 @@ import { LinkService } from './commands/link.service';
 import { CreateLinkRequestDTO } from './dtos/create-link-request.dto';
 //------------ Import utils ------------//
 import { PaginationParamsDTO } from '../../common/utils/types/pagination-params.dto';
-
+//------------ Import decorators ------------//
+import { GetCurrentUser } from '../../common/decorators/get-current-user.decorator';
 @Controller({ path: 'api/link' })
 @ApiTags('Link')
 @ApiTags('Authentication')
@@ -28,8 +29,15 @@ export class LinkController {
   @ApiResponse({
     status: HttpStatus.OK,
   })
-  async getLink(@Query() { offset, limit }: PaginationParamsDTO) {
-    return this.linkService.get(Number(offset), Number(limit));
+  async getLink(
+    @GetCurrentUser() user,
+    @Query() { offset, limit }: PaginationParamsDTO,
+  ) {
+    return this.linkService.get({
+      offset: Number(offset),
+      limit: Number(limit),
+      user_id: Number(user.id),
+    });
   }
 
   @Post('/')

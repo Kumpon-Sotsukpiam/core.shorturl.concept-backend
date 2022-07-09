@@ -26,15 +26,39 @@ export class LinkService {
     });
     return link;
   }
-  public async get(offset: number, limit: number) {
+  public async get({
+    offset,
+    limit,
+    user_id,
+  }: {
+    offset: number;
+    limit: number;
+    user_id: number;
+  }) {
+    const total = await this.prismaService.links.count({
+      where: { user_id },
+    });
     const links = await this.prismaService.links.findMany({
+      select: {
+        id: true,
+        address: true,
+        description: true,
+        expire_in: true,
+        target: true,
+        visit_count: true,
+        created_at: true,
+        updated_at: true,
+      },
+      where: {
+        user_id,
+      },
       skip: offset,
       take: limit,
       orderBy: {
         id: 'asc',
       },
     });
-    return links;
+    return { data: links, total, limit, offset };
   }
   public async getByAddress(address: string) {
     return this.prismaService.links.findFirst({

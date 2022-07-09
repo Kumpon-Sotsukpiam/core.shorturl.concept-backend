@@ -1,4 +1,5 @@
 import { Logger } from '@nestjs/common';
+import { IncomingHttpHeaders } from 'http';
 import {
   OnQueueActive,
   OnQueueCompleted,
@@ -8,6 +9,7 @@ import {
   Processor,
 } from '@nestjs/bull';
 import { Job } from 'bull';
+import { links } from '@prisma/client';
 
 //------------ Import constants ------------//
 import { VISIT_QUEUE } from '../../../common/constant/queue.constant';
@@ -21,8 +23,16 @@ export class VisitQueueConsumer {
   constructor(private readonly visitService: VisitService) {}
 
   @Process()
-  async process(job: Job<any>) {
+  async process(
+    job: Job<{
+      headers: IncomingHttpHeaders;
+      realIP: string;
+      referrer: any;
+      link: links;
+    }>,
+  ) {
     try {
+      const { headers, realIP, referrer, link } = job.data;
     } catch (error) {
       this.logger.error(error);
       throw error;

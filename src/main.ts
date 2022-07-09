@@ -48,6 +48,7 @@ async function bootstrap() {
     app.useGlobalInterceptors(new AuditLogInterceptor());
     app.useGlobalInterceptors(new ExceptionInterceptor());
     app.useGlobalInterceptors(new TransformInterceptor());
+    // set real ip
     const config = new DocumentBuilder()
       .setTitle('OpenAPI Main')
       .setDescription('The OpenAPI description')
