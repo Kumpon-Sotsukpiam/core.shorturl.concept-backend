@@ -1,3 +1,0 @@
-const mockedJwtService = {
-  sign: () => '',
-};

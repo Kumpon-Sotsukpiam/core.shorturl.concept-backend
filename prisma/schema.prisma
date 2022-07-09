@@ -74,13 +74,13 @@ model links {
 }
 
 model users {
-  id                             Int       @id @default(autoincrement())
-  apikey                         String?   @db.VarChar(255)
+  id                         Int      @id @default(autoincrement())
+  apikey                     String?  @db.VarChar(255)
   // banned                              Boolean    @default(false)
   // banned_by_id                        Int?
   // cooldowns                           DateTime[] @db.Timestamptz
-  email                          String    @unique(map: "users_email_unique") @db.VarChar(255)
-  password                       String    @db.VarChar(255)
+  email                      String   @unique(map: "users_email_unique") @db.VarChar(255)
+  password                   String   @db.VarChar(255)
   // reset_password_expires              DateTime?  @db.Timestamptz(6)
   // reset_password_token                String?    @db.VarChar(255)
   // change_email_expires                DateTime?  @db.Timestamptz(6)
@@ -89,24 +89,24 @@ model users {
   // verification_expires                DateTime?  @db.Timestamptz(6)
   // verification_token                  String?    @db.VarChar(255)
   // verified                            Boolean    @default(false)
-  created_at                     DateTime  @default(now()) @db.Timestamptz(6)
-  updated_at                     DateTime  @default(now()) @db.Timestamptz(6)
+  created_at                 DateTime @default(now()) @db.Timestamptz(6)
+  updated_at                 DateTime @default(now()) @db.Timestamptz(6)
   // users                               users?     @relation("usersTousers_banned_by_id", fields: [banned_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "users_banned_by_id_foreign")
   // domains_domains_banned_by_idTousers domains[]  @relation("domains_banned_by_idTousers")
   // domains_domains_user_idTousers domains[] @relation("domains_user_idTousers")
   // hosts                          hosts[]
   // links_links_banned_by_idTousers     links[]    @relation("links_banned_by_idTousers")
-  links_links_user_idTousers     links[]   @relation("links_user_idTousers")
+  links_links_user_idTousers links[]  @relation("links_user_idTousers")
   // other_users                         users[]    @relation("usersTousers_banned_by_id")
 }
 
 model visits {
   id         Int       @id @default(autoincrement())
-  countries  Json?     @default("{}")
+  countries  String    @default("")
+  referrers  String    @default("")
+  link_id    Int
   created_at DateTime  @default(now()) @db.Timestamptz(6)
   updated_at DateTime? @default(now()) @db.Timestamptz(6)
-  link_id    Int
-  referrers  Json?     @default("{}")
   total      Int       @default(0)
   br_chrome  Int       @default(0)
   br_edge    Int       @default(0)
