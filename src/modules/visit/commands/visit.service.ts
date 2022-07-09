@@ -54,12 +54,8 @@ export class VisitService {
           [os_type]: 1,
           total: 1,
           link_id: data.id,
-          countries: {
-            [data.country]: 1,
-          },
-          referrers: {
-            [data.referrer]: 1,
-          },
+          countries: data.country,
+          referrers: data.referrer,
         },
       });
     }

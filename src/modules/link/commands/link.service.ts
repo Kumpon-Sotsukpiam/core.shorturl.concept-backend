@@ -14,7 +14,7 @@ export class LinkService {
 
   public async create(
     { target }: CreateLinkRequestDTO,
-    { user_id }: { user_id: number },
+    { user_id }: { user_id: string },
   ) {
     const address = crypto.randomUUID();
     const link = await this.prismaService.links.create({
@@ -33,7 +33,7 @@ export class LinkService {
   }: {
     offset: number;
     limit: number;
-    user_id: number;
+    user_id: string;
   }) {
     const total = await this.prismaService.links.count({
       where: { user_id },

@@ -12,7 +12,7 @@ const httpControllers = [UserController];
 const commandHandlers = [UserService];
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, forwardRef(() => AuthModule)],
   controllers: [...httpControllers],
   providers: [...commandHandlers],
   exports: [UserService],

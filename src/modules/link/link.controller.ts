@@ -36,7 +36,7 @@ export class LinkController {
     return this.linkService.get({
       offset: Number(offset),
       limit: Number(limit),
-      user_id: Number(user.id),
+      user_id: user.id,
     });
   }
 

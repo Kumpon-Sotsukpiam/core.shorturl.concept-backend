@@ -6,6 +6,6 @@ export class DeleteUserRequestDTO {
     description: 'Password field',
     default: '',
   })
-  @IsPasswordValid()
+  // @IsPasswordValid()
   readonly password: string;
 }

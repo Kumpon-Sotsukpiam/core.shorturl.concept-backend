@@ -23,7 +23,7 @@ model links {
   password                   String?   @db.VarChar(255)
   expire_in                  DateTime? @db.Timestamptz(6)
   target                     String    @db.VarChar(2040)
-  user_id                    Int?
+  user_id                    String?
   visit_count                Int       @default(0)
   created_at                 DateTime  @default(now()) @db.Timestamptz(6)
   updated_at                 DateTime  @default(now()) @db.Timestamptz(6)
@@ -33,7 +33,7 @@ model links {
 }
 
 model users {
-  id                         Int      @id @default(autoincrement())
+  id                         String   @id @default(uuid())
   apikey                     String?  @db.VarChar(255)
   email                      String   @unique(map: "users_email_unique") @db.VarChar(255)
   password                   String   @db.VarChar(255)

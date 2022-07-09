@@ -29,9 +29,9 @@ const BusinessModule = [
   AuthModule,
   RedirectModule,
   UserModule,
-  DomainModule,
+  // DomainModule,
   LinkModule,
-  UrlModule,
+  // UrlModule,
   VisitModule,
   IPModule,
 ];

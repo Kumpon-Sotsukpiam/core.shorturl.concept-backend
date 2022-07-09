@@ -34,7 +34,7 @@ export class UserService {
   public async updateApikey(apikey: string, user_id: string) {
     return this.prismaService.users.update({
       where: {
-        id: Number(user_id),
+        id: user_id,
       },
       data: {
         apikey,
@@ -46,7 +46,7 @@ export class UserService {
       where: { email },
     });
   }
-  public async getById(id: number) {
+  public async getById(id: string) {
     return this.prismaService.users.findUnique({
       where: { id },
     });
@@ -56,7 +56,7 @@ export class UserService {
       where: { apikey },
     });
   }
-  public async deleteById(id: number) {
+  public async deleteById(id: string) {
     return this.prismaService.users.delete({
       where: { id },
     });
