@@ -3,7 +3,9 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   HttpStatus,
+  Param,
   Patch,
   Post,
   Query,
@@ -14,6 +16,8 @@ import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LinkService } from './commands/link.service';
 //------------ Import DTOs ------------//
 import { CreateLinkRequestDTO } from './dtos/create-link-request.dto';
+import { UpdateLinkRequestDTO } from './dtos/update-link-request.dto';
+import { IdNumberDTO } from '../../common/utils/types/id-params.dto';
 //------------ Import utils ------------//
 import { PaginationParamsDTO } from '../../common/utils/types/pagination-params.dto';
 //------------ Import decorators ------------//
@@ -52,35 +56,49 @@ export class LinkController {
   @ApiResponse({
     status: HttpStatus.OK,
   })
-  async updateLink() {}
+  async updateLink(
+    @Param() { id }: IdNumberDTO,
+    @Body() input: UpdateLinkRequestDTO,
+  ) {
+    return this.linkService.update(Number(id), input);
+  }
 
   @Delete('/:id')
   @ApiResponse({
     status: HttpStatus.OK,
   })
-  async deleteLink() {}
+  @HttpCode(HttpStatus.OK)
+  async deleteLink(@Param() { id }: IdNumberDTO) {
+    return this.linkService.deleteById(Number(id));
+  }
 
-  @Get('/:id/stats')
-  @ApiResponse({
-    status: HttpStatus.OK,
-  })
-  async getStats() {}
+  // @Get('/:id/stats')
+  // @ApiResponse({
+  //   status: HttpStatus.OK,
+  // })
+  // async getStats(
+  //   @Param() { id }: IdNumberDTO,
+  // ) { }
 
-  @Post('/:id/protected')
-  @ApiResponse({
-    status: HttpStatus.OK,
-  })
-  async redirectProtected() {}
+  // @Post('/:id/protected')
+  // @ApiResponse({
+  //   status: HttpStatus.OK,
+  // })
+  // async redirectProtected(
+  //   @Param() { id }: IdNumberDTO,
+  // ) { }
 
-  @Post('/report')
-  @ApiResponse({
-    status: HttpStatus.OK,
-  })
-  async getReport() {}
+  // @Post('/report')
+  // @ApiResponse({
+  //   status: HttpStatus.OK,
+  // })
+  // async getReport() { }
 
-  @Post('/admin/ban/:id')
-  @ApiResponse({
-    status: HttpStatus.OK,
-  })
-  async createBan() {}
+  // @Post('/admin/ban/:id')
+  // @ApiResponse({
+  //   status: HttpStatus.OK,
+  // })
+  // async createBan(
+  //   @Param() { id }: IdNumberDTO,
+  // ) { }
 }

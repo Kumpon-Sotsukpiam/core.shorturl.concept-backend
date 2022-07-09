@@ -19,7 +19,7 @@ import { VisitQueueService } from '../visit/commands/visit.queue.service';
 //------------ Import Decorators ------------//
 import { Public } from '../../common/decorators';
 //------------ Import DTOs ------------//
-import { IdDTO } from '../../common/utils/types/id-params.dto';
+import { UUIdDTO } from '../../common/utils/types/id-params.dto';
 import { removeWww } from '../../common/utils';
 import { ConfigService } from '@nestjs/config';
 
@@ -44,7 +44,7 @@ export class RedirectController {
     @Req() req: Request,
     @Res() res: Response,
     @Next() next: NextFunction,
-    @Param() { id }: IdDTO,
+    @Param() { id }: UUIdDTO,
   ) {
     this.logger.debug(req.ip);
     const isBot = isbot(req.headers['user-agent']);

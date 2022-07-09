@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
   HttpStatus,
   Post,
   Req,
@@ -35,6 +36,7 @@ export class AuthController {
   @Public()
   @Post('/login')
   @UseGuards(LocalGuard)
+  @HttpCode(HttpStatus.OK)
   @ApiResponse({
     status: HttpStatus.OK,
   })
@@ -45,6 +47,7 @@ export class AuthController {
   @Public()
   @Post('/signup')
   @UseGuards(SignupAccessGuard)
+  @HttpCode(HttpStatus.CREATED)
   @ApiResponse({
     status: HttpStatus.CREATED,
   })
@@ -73,8 +76,9 @@ export class AuthController {
 
   @Post('/apikey')
   @UseGuards(AccessTokenGuard)
+  @HttpCode(HttpStatus.CREATED)
   @ApiResponse({
-    status: HttpStatus.OK,
+    status: HttpStatus.CREATED,
   })
   async apikey(@Req() req) {
     return this.authService.generateApiKey(req.user.id);

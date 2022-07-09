@@ -5,6 +5,9 @@ import * as crypto from 'crypto';
 import { PrismaService } from '../../prisma';
 //------------ Import DTOs ------------//
 import { CreateLinkRequestDTO } from '../dtos/create-link-request.dto';
+import { UpdateLinkRequestDTO } from '../dtos/update-link-request.dto';
+//------------ Import exceptions ------------//
+import { LinkNotFoundException } from '../exceptions/link.exception';
 
 @Injectable()
 export class LinkService {
@@ -25,6 +28,23 @@ export class LinkService {
       },
     });
     return link;
+  }
+  public async update(id: number, { target }: UpdateLinkRequestDTO) {
+    const link = await this.prismaService.links.findUnique({
+      where: { id },
+    });
+    if (!link) {
+      throw new LinkNotFoundException();
+    }
+    const newlink = await this.prismaService.links.update({
+      where: {
+        id,
+      },
+      data: {
+        target,
+      },
+    });
+    return newlink;
   }
   public async get({
     offset,
@@ -65,6 +85,20 @@ export class LinkService {
       where: {
         address,
       },
+    });
+  }
+  public async deleteById(id: number) {
+    const link = await this.prismaService.links.findUnique({
+      where: { id },
+    });
+    if (!link) {
+      throw new LinkNotFoundException();
+    }
+    return this.prismaService.links.delete({
+      select: {
+        id: true,
+      },
+      where: { id },
     });
   }
 }

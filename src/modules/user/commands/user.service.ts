@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+
 //------------ Import services ------------//
 import { PrismaService } from '../../prisma';
 //------------ Import exceptions ------------//
@@ -58,7 +59,13 @@ export class UserService {
   }
   public async deleteById(id: string) {
     return this.prismaService.users.delete({
-      where: { id },
+      select: {
+        id: true,
+        email: true,
+      },
+      where: {
+        id,
+      },
     });
   }
 }

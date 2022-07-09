@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsEmail, IS_LENGTH } from 'class-validator';
+import { IsEmail } from 'class-validator';
 import { IsPasswordValid } from '../../../common/validations/password.validator';
 
 export class LoginRequestDTO {
