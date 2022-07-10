@@ -65,7 +65,6 @@ export class LinkService {
         description: true,
         expire_in: true,
         target: true,
-        visit_count: true,
         created_at: true,
         updated_at: true,
       },

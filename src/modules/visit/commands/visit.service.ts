@@ -1,5 +1,4 @@
 import { Injectable, Logger } from '@nestjs/common';
-import * as crypto from 'crypto';
 
 //------------ Import services ------------//
 import { PrismaService } from '../../prisma';
@@ -9,33 +8,23 @@ import { createVisitInterface } from '../interfaces/create-visit.interface';
 @Injectable()
 export class VisitService {
   private readonly logger = new Logger(VisitService.name);
-  private readonly browsersList = [
-    'IE',
-    'Firefox',
-    'Chrome',
-    'Opera',
-    'Safari',
-    'Edge',
-  ];
-  private readonly osList = ['Windows', 'Mac OS', 'Linux', 'Android', 'iOS'];
-
   constructor(private readonly prismaService: PrismaService) {}
 
-  public async add(data: any) {
-    this.logger.debug({ data });
-  }
-  private filterInBrowser() {}
-  private filterInOS() {}
-  private async create(params: createVisitInterface) {
+  public async create(params: createVisitInterface) {
     const data = {
       ...params,
-      country: params.country.toLowerCase(),
-      referrer: params.referrer.toLowerCase(),
+      country: params.country,
+      referrer: params.referrer,
     };
     const browser_type = `br_${data.browser}`;
-    const os_type = `br_${data.os}`;
+    const os_type = `os_${data.os}`;
     const visit = await this.prismaService.visits.findFirst({
-      where: { link_id: params.id },
+      where: {
+        link_id: params.id,
+        countries: data.country,
+        regiones: data.region,
+        cities: data.city,
+      },
     });
     if (visit) {
       await this.prismaService.visits.update({
@@ -55,6 +44,8 @@ export class VisitService {
           total: 1,
           link_id: data.id,
           countries: data.country,
+          regiones: data.region,
+          cities: data.city,
           referrers: data.referrer,
         },
       });
