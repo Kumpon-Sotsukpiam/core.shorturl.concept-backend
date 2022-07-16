@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, Min, IsOptional } from 'class-validator';
+import { IsNumber, Min, IsOptional, IsString } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 
 export class PaginationParamsDTO {
@@ -22,4 +22,12 @@ export class PaginationParamsDTO {
   @Transform(({ value }) => Number(value))
   @IsNumber()
   readonly limit?: number;
+
+  @ApiProperty({
+    description: 'search field',
+    default: '',
+  })
+  @IsOptional()
+  @IsString()
+  readonly search?: string;
 }

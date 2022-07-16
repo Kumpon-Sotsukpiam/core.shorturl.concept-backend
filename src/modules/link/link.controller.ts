@@ -35,11 +35,12 @@ export class LinkController {
   })
   async getLink(
     @GetCurrentUser() user,
-    @Query() { offset, limit }: PaginationParamsDTO,
+    @Query() { offset, limit, search }: PaginationParamsDTO,
   ) {
     return this.linkService.get({
       offset: Number(offset),
       limit: Number(limit),
+      search,
       user_id: user.id,
     });
   }

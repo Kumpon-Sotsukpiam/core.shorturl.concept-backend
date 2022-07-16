@@ -9,6 +9,14 @@ import { UpdateLinkRequestDTO } from '../dtos/update-link-request.dto';
 //------------ Import exceptions ------------//
 import { LinkNotFoundException } from '../exceptions/link.exception';
 
+const tsquerySpecialChars = /[()|&:*!]/g;
+const getQueryFromSearchPhrase = (searchPhrase: string) =>
+  searchPhrase
+    .replace(tsquerySpecialChars, ' ')
+    .trim()
+    .split(/\s+/)
+    .join(' | ');
+
 @Injectable()
 export class LinkService {
   private readonly logger = new Logger(LinkService.name);
@@ -49,14 +57,21 @@ export class LinkService {
   public async get({
     offset,
     limit,
+    search,
     user_id,
   }: {
     offset: number;
     limit: number;
+    search?: string;
     user_id: string;
   }) {
     const total = await this.prismaService.links.count({
-      where: { user_id },
+      where: {
+        user_id,
+        target: {
+          contains: getQueryFromSearchPhrase(search || ''),
+        },
+      },
     });
     const links = await this.prismaService.links.findMany({
       select: {
@@ -70,6 +85,9 @@ export class LinkService {
       },
       where: {
         user_id,
+        target: {
+          contains: getQueryFromSearchPhrase(search || ''),
+        },
       },
       skip: offset,
       take: limit,
