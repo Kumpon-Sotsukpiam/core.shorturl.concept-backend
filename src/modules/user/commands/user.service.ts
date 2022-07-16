@@ -11,24 +11,20 @@ export class UserService {
 
   constructor(private readonly prismaService: PrismaService) {}
 
-  public async create({
-    email,
-    password,
-  }: {
+  public async create(data: {
     email: string;
     password: string;
+    first_name: string;
+    last_name: string;
   }) {
     const user = await this.prismaService.users.findFirst({
-      where: { email },
+      where: { email: data.email },
     });
     if (user) {
       throw new UserAlreadyExistsException();
     }
     const newUser = await this.prismaService.users.create({
-      data: {
-        email: email,
-        password: password,
-      },
+      data: data,
     });
     return newUser;
   }

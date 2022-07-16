@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsEmail, IS_LENGTH } from 'class-validator';
+import { IsEmail, IsString, IS_LENGTH } from 'class-validator';
 import { IsPasswordValid } from '../../../common/validations/password.validator';
 
 export class SignUpRequestDTO {
@@ -18,4 +18,18 @@ export class SignUpRequestDTO {
   })
   @IsPasswordValid()
   readonly password: string;
+
+  @ApiProperty({
+    description: 'Firstname field',
+    default: '',
+  })
+  @IsString()
+  readonly first_name: string;
+
+  @ApiProperty({
+    description: 'Lastname field',
+    default: '',
+  })
+  @IsString()
+  readonly last_name: string;
 }
