@@ -18,6 +18,10 @@ const commandHandlers = [VisitService, VisitQueueService, VisitQueueConsumer];
     PrismaModule,
     BullModule.registerQueue({
       name: VISIT_QUEUE,
+      defaultJobOptions: {
+        removeOnComplete: true,
+        removeOnFail: false,
+      },
     }),
   ],
   controllers: [...httpControllers],

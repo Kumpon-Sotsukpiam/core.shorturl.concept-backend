@@ -18,7 +18,9 @@ export class VisitService {
     };
     const browser_type = `br_${data.browser}`;
     const os_type = `os_${data.os}`;
+    const transactions = [];
     const visit = await this.prismaService.visits.findFirst({
+      select: { id: true },
       where: {
         link_id: params.id,
         countries: data.country,
@@ -26,30 +28,40 @@ export class VisitService {
         cities: data.city,
       },
     });
+    transactions.push(
+      this.prismaService.links.update({
+        data: { visit_count: { increment: 1 } },
+        where: { id: params.id },
+      }),
+    );
     if (visit) {
-      await this.prismaService.visits.update({
-        where: { id: visit.id },
-        data: {
-          [browser_type]: visit[browser_type] + 1,
-          [os_type]: visit[os_type] + 1,
-          total: visit.total + 1,
-          updated_at: new Date().toISOString(),
-        },
-      });
+      transactions.push(
+        this.prismaService.visits.update({
+          where: { id: visit.id },
+          data: {
+            [browser_type]: { increment: 1 },
+            [os_type]: { increment: 1 },
+            total: { increment: 1 },
+            updated_at: new Date().toISOString(),
+          },
+        }),
+      );
     } else {
-      await this.prismaService.visits.create({
-        data: {
-          [browser_type]: 1,
-          [os_type]: 1,
-          total: 1,
-          link_id: data.id,
-          countries: data.country,
-          regiones: data.region,
-          cities: data.city,
-          referrers: data.referrer,
-        },
-      });
+      transactions.push(
+        this.prismaService.visits.create({
+          data: {
+            [browser_type]: 1,
+            [os_type]: 1,
+            total: 1,
+            link_id: data.id,
+            countries: data.country,
+            regiones: data.region,
+            cities: data.city,
+            referrers: data.referrer,
+          },
+        }),
+      );
     }
-    return visit;
+    return this.prismaService.$transaction(transactions);
   }
 }
