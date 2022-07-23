@@ -44,33 +44,29 @@ export class VisitQueueConsumer {
       link: links;
     }>,
   ) {
-    try {
-      const { headers, realIP, referrer: _referrer, link } = job.data;
-      const geo = geoip.lookup(realIP);
-      const agent = useragent.parse(job.data.headers['user-agent']);
-      const referrer = _referrer && removeWww(url.parse(_referrer).hostname);
-      const [browser] = this.browsersList.filter((browser: string) =>
-        agent['family'].toLowerCase().includes(browser.toLocaleLowerCase()),
-      );
-      const [os] = this.osList.filter((os: string) =>
-        agent['os']['family'].toLowerCase().includes(os.toLocaleLowerCase()),
-      );
-      const country = geo && geo.country;
-      const region = geo && geo.region;
-      const city = geo && geo.city;
+    const { realIP, referrer: _referrer, link } = job.data;
+    const geo = geoip.lookup(realIP);
+    const agent = useragent.parse(job.data.headers['user-agent']);
+    const referrer = _referrer && removeWww(url.parse(_referrer).hostname);
+    const [browser] = this.browsersList.filter((browser) =>
+      agent['family'].toLowerCase().includes(browser.toLocaleLowerCase()),
+    );
+    const [os] = this.osList.filter((os) =>
+      agent['os']['family'].toLowerCase().includes(os.toLocaleLowerCase()),
+    );
+    const country = geo && geo.country;
+    const region = geo && geo.region;
+    const city = geo && geo.city;
 
-      return await this.visitService.create({
-        id: link.id,
-        referrer: referrer,
-        os: os.toLowerCase().replace(/\s/gi, ''),
-        browser: browser.toLowerCase(),
-        country: country || 'unknown',
-        region: region || 'unknown',
-        city: city || 'unknown',
-      });
-    } catch (error) {
-      throw error;
-    }
+    return await this.visitService.create({
+      id: link.id,
+      referrer: referrer,
+      os: os.toLowerCase().replace(/\s/gi, ''),
+      browser: browser.toLowerCase(),
+      country: country || 'unknown',
+      region: region || 'unknown',
+      city: city || 'unknown',
+    });
   }
 
   @OnQueueActive()

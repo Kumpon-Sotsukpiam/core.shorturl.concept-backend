@@ -14,6 +14,6 @@ export class HealthController {
   @Get()
   @Public()
   public async check(): Promise<HealthCheckResult> {
-    return await this.healthService.check();
+    return this.healthService.check();
   }
 }

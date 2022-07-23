@@ -1,4 +1,4 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 
 //------------ Import modules ------------//
 import { PrismaModule } from '../prisma';

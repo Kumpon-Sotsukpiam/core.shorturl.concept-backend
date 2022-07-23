@@ -24,7 +24,7 @@ export class UserService {
       throw new UserAlreadyExistsException();
     }
     const newUser = await this.prismaService.users.create({
-      data: data,
+      data,
     });
     return newUser;
   }

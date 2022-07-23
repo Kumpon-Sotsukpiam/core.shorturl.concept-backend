@@ -1,9 +1,8 @@
 import { MiddlewareConsumer, Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { HttpModule } from '@nestjs/axios';
 import { BullModule } from '@nestjs/bull';
-import { ConfigService } from '@nestjs/config';
 
 //------------ Import guards ------------//
 import { AccessTokenGuard } from './modules/auth/guards/jwt-access-token.guard';
@@ -18,9 +17,7 @@ import { MetricsModule } from './api-metrics/metrics/metrics.module';
 import { PrismaModule } from './modules/prisma';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { DomainModule } from './modules/domain/domain.module';
 import { LinkModule } from './modules/link/link.module';
-import { UrlModule } from './modules/url/url.module';
 import { VisitModule } from './modules/visit/visit.module';
 import { IPModule } from './modules/ip/ip.module';
 import { RedirectModule } from './modules/redirect/redirect.module';
@@ -29,9 +26,7 @@ const BusinessModule = [
   AuthModule,
   RedirectModule,
   UserModule,
-  // DomainModule,
   LinkModule,
-  // UrlModule,
   VisitModule,
   IPModule,
 ];

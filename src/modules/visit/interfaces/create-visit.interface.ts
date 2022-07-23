@@ -1,4 +1,4 @@
-export interface createVisitInterface {
+export interface CreateVisitInterface {
   browser?: string;
   country?: string;
   region?: string;

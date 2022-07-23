@@ -17,12 +17,11 @@ export class VisitQueueService {
   ) {}
 
   public async add({ req, link }: { req: Request; link: links }) {
-    const job = await this.visitQueue.add({
+    return this.visitQueue.add({
       headers: req.headers,
       realIP: req.ip,
       referrer: req.get('Referrer'),
       link,
     });
-    return job;
   }
 }

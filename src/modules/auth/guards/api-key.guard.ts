@@ -10,7 +10,7 @@ export class ApiKeyGuard extends AuthGuard('x-api-key') {
   canActivate(context: ExecutionContext) {
     const request: Request | any = context.switchToHttp().getRequest();
     if (request && request.query['x-api-key'] && !request.header('x-api-key')) {
-      (request.headers['x-api-key'] as any) = request.query['x-api-key'];
+      request.headers['x-api-key'] = request.query['x-api-key'];
     }
     return super.canActivate(context);
   }

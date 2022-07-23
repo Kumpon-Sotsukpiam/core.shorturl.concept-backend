@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, HttpStatus, Post } from '@nestjs/common';
+import { Controller, Delete, HttpStatus, Post } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 //------------ Import services ------------//
 import { DomainService } from './commands/domain.service';

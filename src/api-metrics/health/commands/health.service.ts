@@ -31,7 +31,7 @@ export class HealthService {
   }
   @HealthCheck()
   public async check(): Promise<HealthCheckResult | undefined> {
-    return await this.health.check(
+    return this.health.check(
       this.listOfThingsToMonitor.map(
         (apiIndicator: HealthIndicator) => async () => {
           try {

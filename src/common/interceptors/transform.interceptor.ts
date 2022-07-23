@@ -24,7 +24,6 @@ export class TransformInterceptor<T>
   ): Observable<Response<T>> | Promise<Observable<Response<T>>> {
     const ctx = context.switchToHttp();
     const response = ctx.getResponse();
-    const request = ctx.getRequest();
     const statusCode = response.statusCode;
 
     return next.handle().pipe(

@@ -15,7 +15,7 @@ export class ApiKeyStrategy extends PassportStrategy(
         prefix: '',
       },
       true,
-      async (apikey, done, req) => {
+      async (apikey, done) => {
         const user = await authService.verifyByApiKey(apikey);
         if (!user) {
           return done(null, false);

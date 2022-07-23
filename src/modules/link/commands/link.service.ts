@@ -47,7 +47,7 @@ export class LinkService {
         target,
         password,
         expire_in,
-        address: address,
+        address,
         user_id: user_id,
       },
     });

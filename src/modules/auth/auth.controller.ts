@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -40,7 +39,7 @@ export class AuthController {
   @ApiResponse({
     status: HttpStatus.OK,
   })
-  async login(@Body() input: LoginRequestDTO, @Req() req) {
+  async login(@Req() req) {
     return this.authService.signToken(req.user);
   }
 
@@ -52,7 +51,7 @@ export class AuthController {
     status: HttpStatus.CREATED,
   })
   async signup(@Body() input: SignUpRequestDTO) {
-    const user = await this.authService.signup(input);
+    await this.authService.signup(input);
     return null;
   }
 

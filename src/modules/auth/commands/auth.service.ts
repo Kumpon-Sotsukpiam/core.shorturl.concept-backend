@@ -28,10 +28,10 @@ export class AuthService {
   }: SignUpRequestDTO) {
     const hashedPassword = await this.hashPassword(password);
     const newUser = await this.userService.create({
-      email: email,
+      email,
+      first_name,
+      last_name,
       password: hashedPassword,
-      first_name: first_name,
-      last_name: last_name,
     });
     return newUser;
   }
@@ -59,7 +59,7 @@ export class AuthService {
   public async generateApiKey(user_id: string) {
     const apikey = crypto.randomUUID();
     const updateUser = await this.userService.updateApikey(apikey, user_id);
-    return { apikey };
+    return { apikey: updateUser.apikey };
   }
   private async validatePassword(
     plainTextPassword: string,

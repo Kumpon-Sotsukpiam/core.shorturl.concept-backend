@@ -1,11 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Transform, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 import {
   IsUrl,
   MinLength,
   MaxLength,
   IsDate,
-  IsDateString,
   IsOptional,
   Matches,
 } from 'class-validator';

@@ -6,7 +6,6 @@ import {
   // To avoid confusion between internal app exceptions and NestJS exceptions
   ConflictException as NestConflictException,
   NotFoundException as NestNotFoundException,
-  BadRequestException as NestBadRequestException,
   Injectable,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';

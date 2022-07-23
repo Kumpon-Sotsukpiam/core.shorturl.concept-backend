@@ -3,14 +3,14 @@ import { Injectable, Logger } from '@nestjs/common';
 //------------ Import services ------------//
 import { PrismaService } from '../../prisma';
 //------------ Import interfaces ------------//
-import { createVisitInterface } from '../interfaces/create-visit.interface';
+import { CreateVisitInterface } from '../interfaces/create-visit.interface';
 
 @Injectable()
 export class VisitService {
   private readonly logger = new Logger(VisitService.name);
   constructor(private readonly prismaService: PrismaService) {}
 
-  public async create(params: createVisitInterface) {
+  public async create(params: CreateVisitInterface) {
     const data = {
       ...params,
       country: params.country,
