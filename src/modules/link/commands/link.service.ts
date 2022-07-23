@@ -7,7 +7,10 @@ import { PrismaService } from '../../prisma';
 import { CreateLinkRequestDTO } from '../dtos/create-link-request.dto';
 import { UpdateLinkRequestDTO } from '../dtos/update-link-request.dto';
 //------------ Import exceptions ------------//
-import { LinkNotFoundException } from '../exceptions/link.exception';
+import {
+  LinkNotFoundException,
+  LinkAlreadyExistsException,
+} from '../exceptions/link.exception';
 
 const tsquerySpecialChars = /[()|&:*!]/g;
 const getQueryFromSearchPhrase = (searchPhrase: string) =>
@@ -24,13 +27,26 @@ export class LinkService {
   constructor(private readonly prismaService: PrismaService) {}
 
   public async create(
-    { target }: CreateLinkRequestDTO,
+    { target, address: custom_url, password, expire_in }: CreateLinkRequestDTO,
     { user_id }: { user_id: string },
   ) {
-    const address = crypto.randomUUID();
+    const address = custom_url ? custom_url : crypto.randomUUID();
+    // Check if custom link already exists
+    if (custom_url) {
+      const is_link_already = await this.prismaService.links.findFirst({
+        where: {
+          address: custom_url,
+        },
+      });
+      if (is_link_already) {
+        throw new LinkAlreadyExistsException();
+      }
+    }
     const link = await this.prismaService.links.create({
       data: {
         target,
+        password,
+        expire_in,
         address: address,
         user_id: user_id,
       },
@@ -93,7 +109,7 @@ export class LinkService {
       skip: offset,
       take: limit,
       orderBy: {
-        id: 'asc',
+        id: 'desc',
       },
     });
     return { data: links, total, limit, offset };
