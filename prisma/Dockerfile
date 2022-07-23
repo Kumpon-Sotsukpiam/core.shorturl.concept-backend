@@ -1,6 +1,6 @@
-FROM node:16-alpine
-RUN openssl version -v
-RUN uname -a
+FROM node:16.16.0-alpine3.15
+# RUN openssl version -v
+# RUN uname -a
 RUN echo $DATABASE_URL
 
 # Create app directory
