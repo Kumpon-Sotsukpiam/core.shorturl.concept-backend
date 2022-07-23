@@ -9,6 +9,8 @@ COPY prisma ./prisma/
 
 # Install app dependencies
 RUN npm install --only=prod
+RUN npm i -g @nestjs/cli
+RUN npm i -D @types/jest ts-jest jest
 
 COPY . .
 
