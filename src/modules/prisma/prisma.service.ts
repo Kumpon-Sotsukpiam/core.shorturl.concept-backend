@@ -23,7 +23,7 @@ export class PrismaService
       ],
       errorFormat: 'colorless',
     });
-    this.logger.log(`Prisma v${Prisma.prismaVersion.client}`);
+    this.logger.debug(`Prisma v${Prisma.prismaVersion.client}`);
     this.$on<any>('query', (e: Prisma.QueryEvent) => {
       this.logger.debug('Query: ' + e.query);
       this.logger.debug('Params: ' + e.params);

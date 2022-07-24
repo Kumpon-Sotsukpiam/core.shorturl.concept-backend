@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   IsUrl,
   MinLength,
@@ -27,9 +27,9 @@ export class CreateLinkRequestDTO {
   })
   @MinLength(1)
   @MaxLength(64, { message: 'Maximum address length is 64.' })
+  @Transform((value) => value.value.trim())
   @Matches(/^[a-zA-Z0-9-_]+$/g, { message: 'Custom URL is not valid' })
   @PreservedURLsValid({ message: "You can't use this custom URL." })
-  // @Transform((value) => value.value.trim())
   @IsOptional()
   readonly address?: string;
 
