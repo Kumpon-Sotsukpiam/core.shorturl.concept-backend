@@ -1,9 +1,12 @@
 export interface CreateVisitInterface {
-  browser?: string;
+  id: number;
+  ip: string;
   country?: string;
   region?: string;
   city?: string;
-  id: number;
-  os: string;
+  browser_name?: string;
+  browser_version?: string;
+  os_name?: string;
+  os_version?: string;
   referrer: string;
 }

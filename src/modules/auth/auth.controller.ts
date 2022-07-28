@@ -39,7 +39,7 @@ export class AuthController {
   @ApiResponse({
     status: HttpStatus.OK,
   })
-  async login(@Req() req) {
+  async login(@Body() input: LoginRequestDTO, @Req() req) {
     return this.authService.signToken(req.user);
   }
 

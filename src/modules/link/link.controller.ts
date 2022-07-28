@@ -73,13 +73,11 @@ export class LinkController {
     return this.linkService.deleteById(Number(id));
   }
 
-  // @Get('/:id/stats')
-  // @ApiResponse({
-  //   status: HttpStatus.OK,
-  // })
-  // async getStats(
-  //   @Param() { id }: IdNumberDTO,
-  // ) { }
+  @Get('/:id/stats')
+  @ApiResponse({
+    status: HttpStatus.OK,
+  })
+  async getStats(@Param() { id }: IdNumberDTO) {}
 
   // @Post('/:id/protected')
   // @ApiResponse({

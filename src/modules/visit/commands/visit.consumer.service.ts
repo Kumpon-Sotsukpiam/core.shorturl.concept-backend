@@ -47,6 +47,10 @@ export class VisitQueueConsumer {
     const { realIP, referrer: _referrer, link } = job.data;
     const geo = geoip.lookup(realIP);
     const agent = useragent.parse(job.data.headers['user-agent']);
+    this.logger.debug({
+      data: job.data,
+      agent,
+    });
     const referrer = _referrer && removeWww(url.parse(_referrer).hostname);
     const [browser] = this.browsersList.filter((browser) =>
       agent['family'].toLowerCase().includes(browser.toLocaleLowerCase()),
@@ -54,15 +58,28 @@ export class VisitQueueConsumer {
     const [os] = this.osList.filter((os) =>
       agent['os']['family'].toLowerCase().includes(os.toLocaleLowerCase()),
     );
+    const os_version = [
+      agent['os']['major'],
+      agent['os']['minor'],
+      agent['os']['patch'],
+    ].join('.');
+    const browser_version = [
+      agent['major'],
+      agent['minor'],
+      agent['patch'],
+    ].join('.');
     const country = geo && geo.country;
     const region = geo && geo.region;
     const city = geo && geo.city;
 
     return await this.visitService.create({
       id: link.id,
+      ip: realIP,
       referrer: referrer,
-      os: os.toLowerCase().replace(/\s/gi, ''),
-      browser: browser.toLowerCase(),
+      os_name: os.toLowerCase().replace(/\s/gi, ''),
+      os_version: os_version,
+      browser_name: browser.toLowerCase(),
+      browser_version: browser_version,
       country: country || 'unknown',
       region: region || 'unknown',
       city: city || 'unknown',

@@ -25,8 +25,8 @@ model links {
   target                     String    @db.VarChar(2040)
   user_id                    String?
   visit_count                Int       @default(0)
-  created_at                 DateTime  @default(now()) @db.Timestamptz(6)
-  updated_at                 DateTime  @default(now()) @db.Timestamptz(6)
+  created_at                 DateTime  @default(now())
+  updated_at                 DateTime  @updatedAt
   uuid                       String    @default(uuid()) @db.Uuid
   users_links_user_idTousers users?    @relation("links_user_idTousers", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "links_user_id_foreign")
   visits                     visits[]
@@ -39,33 +39,38 @@ model users {
   first_name                 String
   last_name                  String
   password                   String   @db.VarChar(255)
-  created_at                 DateTime @default(now()) @db.Timestamptz(6)
-  updated_at                 DateTime @default(now()) @db.Timestamptz(6)
+  created_at                 DateTime @default(now())
+  updated_at                 DateTime @updatedAt
   links_links_user_idTousers links[]  @relation("links_user_idTousers")
 }
 
 model visits {
-  id         Int       @id @default(autoincrement())
-  countries  String?
-  regiones   String?
-  cities     String?
-  referrers  String?
-  link_id    Int
-  created_at DateTime  @default(now()) @db.Timestamptz(6)
-  updated_at DateTime? @default(now()) @db.Timestamptz(6)
-  total      Int       @default(0)
-  br_chrome  Int       @default(0)
-  br_edge    Int       @default(0)
-  br_firefox Int       @default(0)
-  br_ie      Int       @default(0)
-  br_opera   Int       @default(0)
-  br_other   Int       @default(0)
-  br_safari  Int       @default(0)
-  os_android Int       @default(0)
-  os_ios     Int       @default(0)
-  os_linux   Int       @default(0)
-  os_macos   Int       @default(0)
-  os_other   Int       @default(0)
-  os_windows Int       @default(0)
-  links      links     @relation(fields: [link_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "visits_link_id_foreign")
+  id              Int       @id @default(autoincrement())
+  ip              String
+  country         String?
+  region          String?
+  city            String?
+  referer         String?
+  browser_name    String?
+  browser_version String?
+  os_name         String?
+  os_version      String?
+  // total      Int       @default(0)
+  // br_chrome  Int       @default(0)
+  // br_edge    Int       @default(0)
+  // br_firefox Int       @default(0)
+  // br_ie      Int       @default(0)
+  // br_opera   Int       @default(0)
+  // br_other   Int       @default(0)
+  // br_safari  Int       @default(0)
+  // os_android Int       @default(0)
+  // os_ios     Int       @default(0)
+  // os_linux   Int       @default(0)
+  // os_macos   Int       @default(0)
+  // os_other   Int       @default(0)
+  // os_windows Int       @default(0)
+  created_at      DateTime  @default(now())
+  updated_at      DateTime? @updatedAt
+  link_id         Int
+  links           links     @relation(fields: [link_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "visits_link_id_foreign")
 }

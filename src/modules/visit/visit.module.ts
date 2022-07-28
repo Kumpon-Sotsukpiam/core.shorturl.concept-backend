@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bull';
 
+//------------ Import controllers ------------//
+import { VisitController } from './visit.controller';
 //------------ Import commons ------------//
 import { VISIT_QUEUE } from '../../common/constant/queue.constant';
 //------------ Import modules ------------//
@@ -10,7 +12,7 @@ import { VisitService } from './commands/visit.service';
 import { VisitQueueService } from './commands/visit.queue.service';
 import { VisitQueueConsumer } from './commands/visit.consumer.service';
 
-const httpControllers = [];
+const httpControllers = [VisitController];
 const commandHandlers = [VisitService, VisitQueueService, VisitQueueConsumer];
 
 @Module({
